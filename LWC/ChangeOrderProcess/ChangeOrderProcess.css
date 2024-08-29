@@ -1,0 +1,28 @@
+.targetInput{
+    margin-top: 1rem;
+    max-width: 50%;
+}
+.slds-grid {
+    display: flex;
+    align-items: center;
+  }
+  
+  .slds-gutters > * {
+    padding: 0.5rem;
+  }
+  
+  .slds-m-bottom_small {
+    margin-bottom: 0.5rem;
+  }
+  
+  .slds-m-top_small {
+    margin-top: 0.5rem;
+  }
+
+  .slds-text-align_center {
+    text-align: center;
+  }
+
+  .comboWidth{
+    max-width: 40%;
+  }
