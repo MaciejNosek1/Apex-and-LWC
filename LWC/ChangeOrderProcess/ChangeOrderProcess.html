@@ -1,0 +1,185 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <lightning-quick-action-panel header="Change Order Process">
+    <template if:true={showChangeOrderPage}>
+      <div class="slds-is-relative slds-p-around_medium">
+        <template if:true={showSpinner}>
+          <lightning-spinner
+            alternative-text="Loading"
+            size="medium"
+            variant="brand"
+          ></lightning-spinner>
+        </template>
+        <lightning-radio-group
+          name="changeOrderOptions"
+          label="Change Order Type"
+          options={radioOptions}
+          value={selectedRadioOption}
+          onchange={handleRadioButtonChange}
+        >
+        </lightning-radio-group>
+        <template if:true={showTargetCustomerAmount}>
+          <lightning-input
+            type="number"
+            label="Target Customer Amount"
+            value={targetCustomerAmount}
+            onchange={handleAmountChange}
+            class="targetInput"
+          >
+          </lightning-input>
+          <p style="font-size: 12px;"><i>Please upload a copy of the amendment and notify your lending team of this change</i></p>
+        </template>
+      </div>
+      <div slot="footer" class="slds-grid slds-grid_align-spread">
+        <lightning-button
+          variant="neutral"
+          label="Cancel"
+          onclick={closeQuickAction}
+        ></lightning-button>
+        <div>
+          <lightning-button
+            variant="brand"
+            label="Next"
+            class="slds-m-left_x-small"
+            onclick={handleNextButton}
+          ></lightning-button>
+        </div>
+      </div>
+    </template>
+
+    <template if:true={showOrderTeamPage}>
+      <div class="slds-is-relative slds-p-around_medium">
+        <template if:true={showSpinner}>
+          <lightning-spinner
+            alternative-text="Loading"
+            size="medium"
+            variant="brand"
+          ></lightning-spinner>
+        </template>
+        <h2>Select Order Team Members to Delete</h2>
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+          <thead>
+            <tr>
+              <th scope="col">Select</th>
+              <th scope="col">User Name</th>
+              <th scope="col">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template for:each={orderTeamMembers} for:item="member">
+              <tr key={member.Id}>
+                <td>
+                  <lightning-input
+                    type="checkbox"
+                    data-id={member.Id}
+                    onchange={handleOrderKeepTeamMemberSelection}
+                  ></lightning-input>
+                </td>
+                <td>{member.userName}</td>
+                <td>{member.TeamMemberRole__c}</td>
+              </tr>
+            </template>
+            <template if:true={noOrderTeam}>
+              <tr>
+                <td colspan="3" class="slds-text-align_center">No order team available.</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+        <lightning-combobox
+          name="addMembers"
+          label="Do you need to add team members?"
+          options={addMembersOptions}
+          value={addMembers}
+          onchange={handleAddMembersChange}
+          class="slds-p-top_medium comboWidth"
+        ></lightning-combobox>
+        <template if:true={showAddTeamSection}>
+          <template for:each={newTeamMembers} for:item="member" for:index="index">
+            <div key={member} class="slds-grid slds-gutters slds-m-bottom_small">
+              <lightning-record-picker
+                class="slds-col slds-size_1-of-2 comboWidth"
+                label="User"
+                placeholder="Search Users..."
+                object-api-name="User"
+                data-index={index}
+                value={member.userId}
+                onchange={handleAddUser}
+              >
+              </lightning-record-picker>
+
+              <lightning-combobox
+                class="slds-col slds-size_1-of-2 comboWidth"
+                data-index={index}
+                label="Role"
+                options={teamMemberRoles}
+                value={member.role}
+                onchange={handleTeamRoleChange}
+              ></lightning-combobox>
+            </div>
+          </template>
+          <lightning-button
+            variant="neutral"
+            label="Team Member"
+            onclick={handleAddTeamMember}
+            icon-name="utility:add"
+            class="slds-m-top_small"
+          ></lightning-button>
+        </template>
+      </div>
+      <div slot="footer" class="slds-grid slds-grid_align-spread">
+        <lightning-button
+          variant="neutral"
+          label="Cancel"
+          onclick={closeQuickAction}
+        ></lightning-button>
+        <div>
+          <lightning-button
+            variant="neutral"
+            label="Back"
+            onclick={handleBack}
+          ></lightning-button>
+          <lightning-button
+            variant="brand"
+            label="Next"
+            class="slds-m-left_x-small"
+            onclick={handleNextButton}
+          ></lightning-button>
+        </div>
+      </div>
+    </template>
+
+    <template if:true={showConfirmationPage}>
+      <div class="slds-is-relative slds-p-around_medium">
+        <template if:true={showSpinner}>
+          <lightning-spinner
+            alternative-text="Loading"
+            size="medium"
+            variant="brand"
+          ></lightning-spinner>
+        </template>
+        <h2>Proceed with {selectedRadioOption} order?</h2>
+      </div>
+      <div slot="footer" class="slds-grid slds-grid_align-spread">
+        <lightning-button
+          variant="neutral"
+          label="Cancel"
+          onclick={closeQuickAction}
+        ></lightning-button>
+        <div>
+          <lightning-button
+            variant="neutral"
+            label="Back"
+            onclick={handleBack}
+          ></lightning-button>
+          <lightning-button
+            variant="brand"
+            label="Save"
+            class="slds-m-left_x-small"
+            onclick={handleSaveButton}
+          ></lightning-button>
+        </div>
+      </div>
+    </template>
+  </lightning-quick-action-panel>
+</template>
